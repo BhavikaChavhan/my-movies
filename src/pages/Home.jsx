@@ -39,7 +39,7 @@ export default function Home() {
       </h1>
 
       {/* Movie Grid */}
-      <div className="flex flex-wrap justify-center gap-8 px-4">
+      <div className="flex flex-wrap justify-center gap-4 px-1">
         {movies.length > 0 ? (
           movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
         ) : (
