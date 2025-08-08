@@ -1,58 +1,60 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import MovieCard from "../components/MovieCard";
 import Pagination from "../components/Pagination";
 
-// API key and base setup
 const API_KEY = "c45a857c193f6302f2b5061c3b85e743";
+const BASE_URL = "https://api.themoviedb.org/3/movie/popular";
 
-function Home() {
-  // States to store movies, current page and total pages
+export default function Home() {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  // Fetch popular movies from TMDB
-  const getPopularMovies = async () => {
+  // Fetch movies (wrapped in useCallback for optimization)
+  const getPopularMovies = useCallback(async () => {
     try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`
+      const res = await fetch(
+        `${BASE_URL}?api_key=${API_KEY}&language=en-US&page=${page}`
       );
-      const data = await response.json();
+      const data = await res.json();
 
-      // Save results in state
-      setMovies(data.results);
-      
-      // Limit total pages to max 500 (TMDB limit)
-      setTotalPages(data.total_pages > 500 ? 500 : data.total_pages);
-    } catch (error) {
-      console.log("Error fetching popular movies:", error);
+      if (data?.results?.length > 0) {
+        setMovies(data.results);
+        setTotalPages(Math.min(data.total_pages, 500)); // TMDB max page limit
+      }
+    } catch (err) {
+      console.error("Failed to fetch popular movies:", err);
     }
-  };
+  }, [page]);
 
-  // Fetch movies whenever the page changes
+  // Trigger fetch on page change
   useEffect(() => {
     getPopularMovies();
-  }, [page]);
+  }, [getPopularMovies]);
 
   return (
     <div className="py-7 bg-gray-800 min-h-screen">
-      <h1 className="text-white xs:text-xl sm:text-3xl font-bold text-center mb-6">Popular Movies</h1>
+      <h1 className="text-white text-xl sm:text-3xl font-bold text-center mb-6">
+        Popular Movies
+      </h1>
 
-      {/* Movie list */}
-      <div className="flex flex-wrap justify-center gap-8">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+      {/* Movie Grid */}
+      <div className="flex flex-wrap justify-center gap-8 px-4">
+        {movies.length > 0 ? (
+          movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
+        ) : (
+          <p className="text-white">No movies found.</p>
+        )}
       </div>
 
       {/* Pagination */}
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
+      )}
     </div>
   );
 }
-
-export default Home;
