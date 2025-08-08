@@ -1,57 +1,59 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import MovieCard from "../components/MovieCard";
 import Pagination from "../components/Pagination";
 
-// TMDB API key
 const API_KEY = "c45a857c193f6302f2b5061c3b85e743";
+const BASE_URL = "https://api.themoviedb.org/3/movie/top_rated";
 
-function TopRated() {
-  // States for storing movie data, current page, and total pages
+export default function TopRated() {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  // Function to fetch top rated movies
-  const fetchTopRatedMovies = async () => {
+  // Fetch top rated movies using useCallback
+  const fetchTopRatedMovies = useCallback(async () => {
     try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`
+      const res = await fetch(
+        `${BASE_URL}?api_key=${API_KEY}&language=en-US&page=${page}`
       );
+      const data = await res.json();
 
-      const data = await response.json();
-
-      // Save movies and total pages in state
-      setMovies(data.results);
-      setTotalPages(data.total_pages > 500 ? 500 : data.total_pages); // limit max pages to 500
-    } catch (error) {
-      console.log("Error fetching top rated movies:", error);
+      if (data?.results?.length > 0) {
+        setMovies(data.results);
+        setTotalPages(Math.min(data.total_pages, 500)); // TMDB page limit
+      }
+    } catch (err) {
+      console.error("Error fetching top rated movies:", err);
     }
-  };
+  }, [page]);
 
-  // Call API whenever the page changes
   useEffect(() => {
     fetchTopRatedMovies();
-  }, [page]);
+  }, [fetchTopRatedMovies]);
 
   return (
     <div className="bg-gray-800 min-h-screen py-6">
-      <h1 className="xs:text-xl sm:text-3xl font-bold text-center mb-6 text-white">Top Rated Movies</h1>
+      <h1 className="text-xl sm:text-3xl font-bold text-center mb-6 text-white">
+        Top Rated Movies
+      </h1>
 
       {/* Movie Cards */}
-      <div className="flex flex-wrap justify-center gap-8">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+      <div className="flex flex-wrap justify-center gap-8 px-4">
+        {movies.length > 0 ? (
+          movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
+        ) : (
+          <p className="text-white">No movies found.</p>
+        )}
       </div>
 
-      {/* Pagination Component */}
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
+        />
+      )}
     </div>
   );
 }
-
-export default TopRated;
