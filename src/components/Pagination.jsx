@@ -1,12 +1,10 @@
 function Pagination({ currentPage, totalPages, onPageChange }) {
-  // Go to previous page
   const handlePrev = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
     }
   };
 
-  // Go to next page
   const handleNext = () => {
     if (currentPage < totalPages) {
       onPageChange(currentPage + 1);
@@ -14,18 +12,18 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
   };
 
   return (
-    <div className="flex justify-center items-center gap-4 my-6">
+    <div className="flex justify-center items-center gap-2 py-4 flex-wrap">
       {/* Previous Button */}
       <button
         onClick={handlePrev}
         disabled={currentPage === 1}
-        className="px-3 py-1 bg-gray-300 text-black rounded disabled:opacity-50"
+        className="text-xs sm:text-sm px-2 sm:px-3 py-1 bg-gray-300 text-black rounded disabled:opacity-50 w-16 sm:w-auto"
       >
         Prev
       </button>
 
-      {/* Current Page Info */}
-      <span className="px-4 py-1 font-medium">
+      {/* Page Info */}
+      <span className="text-xs sm:text-sm px-2 py-1 font-medium text-white">
         Page {currentPage} of {totalPages}
       </span>
 
@@ -33,7 +31,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
       <button
         onClick={handleNext}
         disabled={currentPage === totalPages}
-        className="px-3 py-1 bg-gray-300 text-black rounded disabled:opacity-50"
+        className="text-xs sm:text-sm px-2 sm:px-3 py-1 bg-gray-300 text-black rounded disabled:opacity-50 w-16 sm:w-auto"
       >
         Next
       </button>

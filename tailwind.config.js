@@ -7,4 +7,15 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+
+    theme: {
+      extend: {
+        screens: {
+          'xs': '300px', // add custom 'xs' breakpoint
+        },
+      },
+    },
+
+    
+  
 }

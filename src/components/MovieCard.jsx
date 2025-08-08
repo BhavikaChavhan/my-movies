@@ -17,12 +17,12 @@ export default function MovieCard({ movie }) {
         <img
           src={poster}
           alt={movie.title}
-          className="w-full h-80 object-cover rounded-t"
+          className="w-full sm:h-80 object-full rounded-t"
         />
       </Link>
 
-      <div className="p-4">
-        <h3 className="text-lg font-bold mb-1">{movie.title}</h3>
+      <div className="p-2 sm:p-4">
+        <h3 className=" text-sm sm:text-lg font-bold mb-1">{movie.title}</h3>
         <p className="text-sm font-semibold text-blue-700 mb-1">
           Rating: {movie.vote_average}
         </p>

@@ -5,6 +5,7 @@ import Upcoming from "./pages/Upcoming";
 import MovieDetail from "./pages/MovieDetail";
 import Search from "./pages/Search";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 
 export default function App() {
@@ -18,7 +19,7 @@ export default function App() {
         <Route path="/movie/:id" element={<MovieDetail />} />
         <Route path="/search" element={<Search />} />
       </Routes>
-      
+      <Footer/>
       </>
     
   );

@@ -36,7 +36,7 @@ function Home() {
 
   return (
     <div className="py-7 bg-gray-800 min-h-screen">
-      <h1 className="text-white text-3xl font-bold text-center mb-6">Popular Movies</h1>
+      <h1 className="text-white xs:text-xl sm:text-3xl font-bold text-center mb-6">Popular Movies</h1>
 
       {/* Movie list */}
       <div className="flex flex-wrap justify-center gap-8">

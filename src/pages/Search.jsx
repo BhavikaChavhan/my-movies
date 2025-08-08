@@ -39,8 +39,8 @@ function Search() {
   }, [query, page]);
 
   return (
-    <div className="p-4 bg-gray-800 min-h-screen text-black">
-      <h2 className="text-2xl font-bold text-center text-white mb-6">
+    <div className=" bg-gray-800 min-h-screen text-black">
+      <h2 className="pt-3 text-xl font-bold text-center text-white">
         Search Results for: <span className="text-yellow-300">{query}</span>
       </h2>
 

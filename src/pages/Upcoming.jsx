@@ -34,11 +34,11 @@ function Upcoming() {
   }, [page]);
 
   return (
-    <div className="bg-gray-800 min-h-screen text-black py-6">
-      <h1 className="text-3xl font-bold text-center text-white mb-6">Upcoming Movies</h1>
+    <div className="bg-gray-800 min-h-screen py-6">
+      <h1 className="xs:text-xl sm:text-3xl font-bold text-center text-white mb-6">Upcoming Movies</h1>
 
       {/* Movies grid */}
-      <div className="flex flex-wrap justify-center gap-6 px-4">
+      <div className="flex flex-wrap justify-center gap-8">
         {movies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
